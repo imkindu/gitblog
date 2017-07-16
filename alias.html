@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>alias 别名|imkindu</title>
+	<meta name="keywords" content="alias,linux,imkindu">
+	<meta name="description" content="alias 命令用来设定指令的别名，在Linux系统经常有一些很长的路径或者命令...">
+	
+	<link rel="stylesheet" href="/gitblog/theme/quest/assets/plugins/bootstrap/css/bootstrap.min.css?ver=2.2" type="text/css" media="all" />
+	<link rel="stylesheet" href="/gitblog/theme/quest/assets/plugins/font-awesome/css/font-awesome.min.css?ver=2.2" type="text/css" media="all" />
+	<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext">
+	<link rel="stylesheet" href="/gitblog/theme/quest/css/style.css?ver=2.2" type="text/css" media="all" />
+	<link rel="stylesheet" href="/gitblog/theme/quest/css/customizer.css?ver=2.2" type="text/css" media="all" />
+	<link rel="alternate" type="application/rss+xml" title="imkindu" href="/feed.xml" />
+	
+	</head>
+
+<body class="home blog wide">
+	<div id="page" class="hfeed site">
+		<a class="skip-link screen-reader-text" href="#content">Skip to content</a>
+		    <header id="masthead" class="main-header" role="banner">
+<div class="container">
+	<div class="row">
+		<div class="site-branding col-md-4">
+			<h1 class="site-title"><a href="/" rel="home">imkindu</a></h1>
+				<span class="site-description">运维菜鸟-阿杜</span>
+		</div>
+		<!-- .site-branding -->
+	</div>
+</div>
+</header>		    <div id="content">
+	<div class="quest-row site-content">
+		<div class="container">
+			<div class="row">
+				<div id="primary" class="content-area single col-md-9">
+					<div id="main" class="site-main" role="main">
+						<article class="post hentry">
+	<header class="entry-header">
+	<h1 class="post-title"><a href="/blog/alias.html" rel="bookmark">alias 别名 </a></h1>
+	<div class="entry-meta">
+		<time class="post-date"><i class="fa fa-clock-o"></i>2015-07-30</time>
+				<span class="seperator">/</span>
+	    <span><i class="fa fa-user"></i> imkindu</span>
+	    	</div><!-- .entry-meta -->
+</header><!-- .entry-header -->
+	<div class="entry-content">
+		<!--
+author: imkindu
+date: 2015-07-30
+title: alias 别名
+tags: alias
+category: linux
+status: publish
+summary: alias 命令用来设定指令的别名，在Linux系统经常有一些很长的路径或者命令...
+-->
+<link href="http://cdn.bootcss.com/highlight.js/8.0/styles/monokai_sublime.min.css" rel="stylesheet">  
+<script src="http://cdn.bootcss.com/highlight.js/8.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<p><strong><h3 style align='center'>alias 别名</h3></strong></p>
+<h3>简介:</h3>
+<p>　　<strong><em>alias</em></strong> 命令用来设定指令的别名，在Linux系统经常有一些很长的路径或者命令，在使用时，我们可以使用较短的名称来进行简化。在使用alias时，必须使用 <code>''</code> 将原来的命令引起来，以防特殊字符导致错误。</p>
+<p>　　<strong><em>alias</em></strong>命令仅限于当前环境操作，如果退出或者重启等操作，别名将会实现，如果需要永久生效，需要将自定义别名写入配置文件中<code>/etc/bashrc</code>  <code>~/.bashrc</code></p>
+<h5>查看当前环境所有别名</h5>
+<pre><code>    [imkindu@centos6 scripts]$ alias        #查看当前环境所有别名
+    alias l.='ls -d .* --color=auto'
+    alias ll='ls -l --color=auto'
+    alias ls='ls --color=auto'
+    alias vi='vim'
+    alias which='alias | /usr/bin/which --tty-only --read-alias --show-dot --show-tilde'</code></pre>
+<h5>定义别名 alias</h5>
+<h6>语法</h6>
+<p>　　<strong><em>alias 新的命令='旧命令 -选项/参数'</em></strong></p>
+<pre><code>    [imkindu@centos6 scripts]$ alias imkindu='whoami'       #定义别名
+    [imkindu@centos6 scripts]$ alias
+    alias imkindu='whoami'
+    alias l.='ls -d .* --color=auto'
+    alias ll='ls -l --color=auto'
+    alias ls='ls --color=auto'
+    alias vi='vim'
+    alias which='alias | /usr/bin/which --tty-only --read-alias --show-dot --show-tilde'
+    [imkindu@centos6 scripts]$ imkindu          #使用别名
+    imkindu</code></pre>
+<h5>取消别名 unalias</h5>
+<pre><code>    [imkindu@centos6 scripts]$ unalias imkindu      #取消别名
+    [imkindu@centos6 scripts]$ alias
+    alias l.='ls -d .* --color=auto'
+    alias ll='ls -l --color=auto'
+    alias ls='ls --color=auto'
+    alias vi='vim'
+    alias which='alias | /usr/bin/which --tty-only --read-alias --show-dot --show-tilde'
+    [imkindu@centos6 scripts]$ imkindu
+    -bash: imkindu: command not found</code></pre>
+<h5>别名永久生效</h5>
+<p>　　linux中一切皆文件，要想任何配置永久生效，都必须写入文件中
+　　别名永久生效可以写入全局文件<code>/etc/bashrc</code> 或者个人配置文件<code>~/.bashrc</code>中</p>
+<pre><code>    [imkindu@centos6 scripts]$ cat ~/.bashrc 
+    # .bashrc
+    # Source global definitions
+    if [ -f /etc/bashrc ]; then
+        . /etc/bashrc
+    fi
+    alias wai="whoami"                  #将别名写入文件中
+    # User specific aliases and functions</code></pre>
+<p>　　令修改的配置文件生效：<code>source filename</code></p>
+<pre><code>    [imkindu@centos6 scripts]$ source ~/.bashrc         #令文件生效
+    [imkindu@centos6 scripts]$ alias
+    alias imkindu='whoami'
+    alias l.='ls -d .* --color=auto'
+    alias ll='ls -l --color=auto'
+    alias ls='ls --color=auto'
+    alias vi='vim'
+    alias wai='whoami'
+    alias which='alias | /usr/bin/which --tty-only --read-alias --show-dot --show-tilde'
+    [imkindu@centos6 scripts]$ wai
+    imkindu</code></pre>
+	</div><!-- .entry-content -->	<footer class="entry-footer">
+		<ul class="post-categories">
+          
+          <li><a href="/category/linux.html" rel="category">linux</a></li>
+        	</ul>
+		
+		<ul class="post-tags">
+                   <li><a href="/tags/alias.html" rel="tag">alias</a></li>
+        	</ul>
+		
+	</footer><!-- .entry-footer --></article><!-- #post-## -->            								</div>
+					<!-- #main -->
+				</div>
+				<!-- #primary -->
+				<div id="secondary" class="widget-area main-sidebar col-md-3" role="complementary">
+	<aside class="widget widget_search sidebar-widget clearfix">
+	<h3 class="widget-title">搜索</h3>
+	<form class="search" action="/search" method="get">
+		<fieldset>
+			<div class="text">
+				<input name="keyword" id="keyword" type="text" placeholder="Search ..."/>
+				<button class="fa fa-search">Search</button>
+			</div>
+		</fieldset>
+	</form>
+</aside>
+	<aside class="widget widget_categories sidebar-widget clearfix">
+	<h3 class="widget-title">分类目录</h3>
+	<ul>
+		        <li class="cat-item"><a href="/category/linux.html" >linux</a></li>
+        	</ul>
+</aside>
+	<aside class="widget widget_archive sidebar-widget clearfix">
+	<h3 class="widget-title">文章归档</h3>
+	<ul>
+		<li><a href="/archive/201507.html">2015-07</a></li>
+		</ul>
+</aside>	<aside class="widget widget_recent_entries sidebar-widget clearfix">
+	<h3 class="widget-title">近期文章</h3>
+	<ul>
+	    <li><a href="/blog/alias.html">alias 别名</a></li>
+        <li><a href="/blog/shell.html">shell 特性</a></li>
+    	</ul>
+</aside>
+	<aside class="widget widget_tag_cloud sidebar-widget clearfix">
+	<h3 class="widget-title">标签</h3>
+	<div class="tagcloud">
+		<a href="/tags/alias.html"  title="alias" >alias</a>
+		<a href="/tags/shell.html"  title="shell" >shell</a>
+		</div>
+</aside>
+	<aside class="widget widget_text sidebar-widget clearfix">
+	<h3 class="widget-title">介绍</h3>
+	<div class="textwidget">
+		<p>运维菜鸟，爱生活，爱学习</p>
+	</div>
+</aside>
+</div><!-- #secondary -->			</div>
+			<!-- .row -->
+		</div>
+		<!-- .container -->
+	</div>
+	<!-- .quest-row -->
+</div>		    <footer id="colophon" class="copyright quest-row" role="contentinfo">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6 copyright-text">
+				<a href="https://github.com/jockchou/gitblog">Proudly powered by Gitblog</a>
+			</div>
+			<div class="col-md-6 social-icon-container clearfix">
+				<ul></ul>
+			</div>
+		</div>
+		<!-- end row -->
+	</div>
+	<!-- end container -->
+</footer>	</div><!-- #page -->
+	<a href="#0" class="cd-top"><i class="fa fa-angle-up"></i></a>
+
+<script type="text/javascript" src="/gitblog/theme/quest/assets/plugins/modernizr/modernizr.custom.js?ver=2.2"></script>
+<script type="text/javascript" src="/gitblog/theme/quest/js/jquery/jquery.js?ver=1.11.2"></script>
+<script type="text/javascript" src="/gitblog/theme/quest/js/jquery/jquery-migrate.min.js?ver=1.2.1"></script>
+<script type="text/javascript" src="/gitblog/theme/quest/assets/plugins/bootstrap/js/bootstrap.min.js?ver=2.2"></script>
+<script type="text/javascript" src="/gitblog/theme/quest/assets/plugins/wow/wow.js?ver=2.2"></script>
+<script type="text/javascript" src="/gitblog/theme/quest/assets/plugins/colorbox/jquery.colorbox-min.js?ver=2.2"></script>
+<script type="text/javascript" src="/gitblog/theme/quest/assets/js/quest.js?ver=2.2"></script>
+	
+<link rel="stylesheet" href="//cdn.bootcss.com/highlight.js/8.6/styles/default.min.css">
+<script src="//cdn.bootcss.com/highlight.js/8.6/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+</body>
+</html>

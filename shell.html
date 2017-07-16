@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>shell 特性|imkindu</title>
+	<meta name="keywords" content="shell,linux,imkindu">
+	<meta name="description" content="shell 特性">
+	
+	<link rel="stylesheet" href="/gitblog/theme/quest/assets/plugins/bootstrap/css/bootstrap.min.css?ver=2.2" type="text/css" media="all" />
+	<link rel="stylesheet" href="/gitblog/theme/quest/assets/plugins/font-awesome/css/font-awesome.min.css?ver=2.2" type="text/css" media="all" />
+	<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext">
+	<link rel="stylesheet" href="/gitblog/theme/quest/css/style.css?ver=2.2" type="text/css" media="all" />
+	<link rel="stylesheet" href="/gitblog/theme/quest/css/customizer.css?ver=2.2" type="text/css" media="all" />
+	<link rel="alternate" type="application/rss+xml" title="imkindu" href="/feed.xml" />
+	
+	</head>
+
+<body class="home blog wide">
+	<div id="page" class="hfeed site">
+		<a class="skip-link screen-reader-text" href="#content">Skip to content</a>
+		    <header id="masthead" class="main-header" role="banner">
+<div class="container">
+	<div class="row">
+		<div class="site-branding col-md-4">
+			<h1 class="site-title"><a href="/" rel="home">imkindu</a></h1>
+				<span class="site-description">运维菜鸟-阿杜</span>
+		</div>
+		<!-- .site-branding -->
+	</div>
+</div>
+</header>		    <div id="content">
+	<div class="quest-row site-content">
+		<div class="container">
+			<div class="row">
+				<div id="primary" class="content-area single col-md-9">
+					<div id="main" class="site-main" role="main">
+						<article class="post hentry">
+	<header class="entry-header">
+	<h1 class="post-title"><a href="/blog/shell.html" rel="bookmark">shell 特性 </a></h1>
+	<div class="entry-meta">
+		<time class="post-date"><i class="fa fa-clock-o"></i>2015-07-30</time>
+				<span class="seperator">/</span>
+	    <span><i class="fa fa-user"></i> imkindu</span>
+	    	</div><!-- .entry-meta -->
+</header><!-- .entry-header -->
+	<div class="entry-content">
+		<!--
+author: imkindu
+date: 2015-07-30
+title: shell 特性
+tags: shell
+category: linux
+status: publish
+summary: shell 特性
+-->
+<link href="http://cdn.bootcss.com/highlight.js/8.0/styles/monokai_sublime.min.css" rel="stylesheet">  
+<script src="http://cdn.bootcss.com/highlight.js/8.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<p><strong><h3 style align='center'>shell 特性</h3></strong></p>
+<h5>什么是shell:</h5>
+<ul>
+<li>shell是一个用c语言编写的程序，是用户使用linux的桥梁，
+它接收用户输入的命令并把它送入内核去执行</li>
+<li>shell即使一种命令语言，也是一种程序设计语言</li>
+<li>shell时linux的命令解释器（command interpreter）</li>
+</ul>
+<p><img src="img/shell01.png" alt="shell" title="shell" /></p>
+<h5>shell环境</h5>
+<p>　　linux的shell种类众多，常见的有：</p>
+<pre><code>    [imkindu@centos6 scripts]$ cat /etc/shells  ＃查看当前系统所有的shell
+    /bin/sh             #Bourne Shell
+    /bin/bash           #Bourne Again Shell
+    /sbin/nologin       #系统用户，不能登录
+    /bin/dash
+    /bin/tcsh
+    /bin/csh            #C Shell
+
+    [imkindu@centos6 scripts]$ echo $SHELL      #显示当前环境使用shell
+    /bin/bash</code></pre>
+<p>　　Bash是大多数Linux系统的默认shell。</p>
+<pre><code>    [imkindu@centos6 scripts]$ ll /bin/sh 
+    lrwxrwxrwx. 1 root root 4 Jul 14 10:38 /bin/sh -&gt; bash  #软链接</code></pre>
+<p>　　现在一般情况下，并不区分sh和bash,像#!/bin/sh可以写为#!/bin/bash <br/>
+　　<strong>#!      申明用哪种解释器</strong></p>
+<h5>命令执行</h5>
+<p>　　在用户输入命令后回车，会提请shell程序找到输入的命令所对应的可执行程序或者代码，并分析后提交给内核分配资源，将其运行起来</p>
+<h5>内部命令和外部命令</h5>
+<p>　　linux命令分为：<strong>内部命令</strong> 和 <strong>外部命令</strong></p>
+<blockquote>
+<h5>内部命令：</h5>
+</blockquote>
+<p>　　内部命令实际上就是shell程序的一部分，通常在Linux系统加载时就被加载并驻留在内存中了，其执行速度比外部命令快，因为解析内部命令不需要创建子进程。如<code>cd</code>,<code>echo</code>,<code>history</code></p>
+<blockquote>
+<h5>外部命令：</h5>
+</blockquote>
+<p>　　外部命令是Linux中实用程序部分，因程序的功能强大，包含的程序量也大，并不会随系统启动加载到内存中，只有在使用的时候才会被调用内存，通常放在<code>/bin</code>、<code>/usr/bin</code>、<code>/usr/sbin</code>...等目录中</p>
+<h5>区分内部命令外部命令 type</h5>
+<p>　　<strong>命令类型</strong>：</p>
+<ul>
+<li>alias 别名</li>
+<li>builtin 内置命令</li>
+<li>function 函数，shell函数</li>
+<li>file 文件，外部命令</li>
+<li>keyword 关键字</li>
+<li>
+<p>unfount 没有找到</p>
+<pre><code>[imkindu@centos6 scripts]$ type echo
+echo is a shell builtin                 #内部命令
+[imkindu@centos6 scripts]$ type ls
+ls is aliased to `ls --color=auto'      #别名
+[imkindu@centos6 scripts]$ type passwd
+passwd is /usr/bin/passwd               #外部命令</code></pre>
+</li>
+</ul>
+<h5>命令优先级</h5>
+<blockquote>
+<p>alias #别名 &gt; builtin #内置命令 &gt; hash #hash缓存 &gt; path #外部命令</p>
+</blockquote>
+<h5>hash表</h5>
+<blockquote>
+<p>linux系统中有一个hash表，当执行外部命令或者别名是，系统会将这条命令的路劲和名称保存在这张表里，相当于缓存一样，下一次系统调用这条命令时，直接找到hash表里面的命令所对应的路径执行，不用再path路径下寻找了，大大提高了命令的调用效率</p>
+</blockquote>
+<pre><code>    hash                    #显示hash缓存
+    hash -l                 #显示hash缓存
+    hash -p paht name       #将命令全路径path起别名name
+    hash -t name            #打印缓存中name的路径
+    hash -d name            #清除name缓存
+    hash -r                 #清除所有缓存
+
+    [imkindu@centos6 scripts]$ hash -l
+    builtin hash -p /bin/readlink readlink
+    builtin hash -p /usr/bin/vim vim
+    builtin hash -p /bin/cat cat
+    builtin hash -p /bin/touch touch
+    builtin hash -p /bin/mv mv
+    builtin hash -p /bin/uname uname
+    builtin hash -p /bin/ln ln
+    builtin hash -p /usr/bin/whoami whoami
+    builtin hash -p /bin/env env
+    builtin hash -p /bin/ls ls</code></pre>
+	</div><!-- .entry-content -->	<footer class="entry-footer">
+		<ul class="post-categories">
+          
+          <li><a href="/category/linux.html" rel="category">linux</a></li>
+        	</ul>
+		
+		<ul class="post-tags">
+                   <li><a href="/tags/shell.html" rel="tag">shell</a></li>
+        	</ul>
+		
+	</footer><!-- .entry-footer --></article><!-- #post-## -->            								</div>
+					<!-- #main -->
+				</div>
+				<!-- #primary -->
+				<div id="secondary" class="widget-area main-sidebar col-md-3" role="complementary">
+	<aside class="widget widget_search sidebar-widget clearfix">
+	<h3 class="widget-title">搜索</h3>
+	<form class="search" action="/search" method="get">
+		<fieldset>
+			<div class="text">
+				<input name="keyword" id="keyword" type="text" placeholder="Search ..."/>
+				<button class="fa fa-search">Search</button>
+			</div>
+		</fieldset>
+	</form>
+</aside>
+	<aside class="widget widget_categories sidebar-widget clearfix">
+	<h3 class="widget-title">分类目录</h3>
+	<ul>
+		        <li class="cat-item"><a href="/category/linux.html" >linux</a></li>
+        	</ul>
+</aside>
+	<aside class="widget widget_archive sidebar-widget clearfix">
+	<h3 class="widget-title">文章归档</h3>
+	<ul>
+		<li><a href="/archive/201507.html">2015-07</a></li>
+		</ul>
+</aside>	<aside class="widget widget_recent_entries sidebar-widget clearfix">
+	<h3 class="widget-title">近期文章</h3>
+	<ul>
+	    <li><a href="/blog/alias.html">alias 别名</a></li>
+        <li><a href="/blog/shell.html">shell 特性</a></li>
+    	</ul>
+</aside>
+	<aside class="widget widget_tag_cloud sidebar-widget clearfix">
+	<h3 class="widget-title">标签</h3>
+	<div class="tagcloud">
+		<a href="/tags/alias.html"  title="alias" >alias</a>
+		<a href="/tags/shell.html"  title="shell" >shell</a>
+		</div>
+</aside>
+	<aside class="widget widget_text sidebar-widget clearfix">
+	<h3 class="widget-title">介绍</h3>
+	<div class="textwidget">
+		<p>运维菜鸟，爱生活，爱学习</p>
+	</div>
+</aside>
+</div><!-- #secondary -->			</div>
+			<!-- .row -->
+		</div>
+		<!-- .container -->
+	</div>
+	<!-- .quest-row -->
+</div>		    <footer id="colophon" class="copyright quest-row" role="contentinfo">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6 copyright-text">
+				<a href="https://github.com/jockchou/gitblog">Proudly powered by Gitblog</a>
+			</div>
+			<div class="col-md-6 social-icon-container clearfix">
+				<ul></ul>
+			</div>
+		</div>
+		<!-- end row -->
+	</div>
+	<!-- end container -->
+</footer>	</div><!-- #page -->
+	<a href="#0" class="cd-top"><i class="fa fa-angle-up"></i></a>
+
+<script type="text/javascript" src="/gitblog/theme/quest/assets/plugins/modernizr/modernizr.custom.js?ver=2.2"></script>
+<script type="text/javascript" src="/gitblog/theme/quest/js/jquery/jquery.js?ver=1.11.2"></script>
+<script type="text/javascript" src="/gitblog/theme/quest/js/jquery/jquery-migrate.min.js?ver=1.2.1"></script>
+<script type="text/javascript" src="/gitblog/theme/quest/assets/plugins/bootstrap/js/bootstrap.min.js?ver=2.2"></script>
+<script type="text/javascript" src="/gitblog/theme/quest/assets/plugins/wow/wow.js?ver=2.2"></script>
+<script type="text/javascript" src="/gitblog/theme/quest/assets/plugins/colorbox/jquery.colorbox-min.js?ver=2.2"></script>
+<script type="text/javascript" src="/gitblog/theme/quest/assets/js/quest.js?ver=2.2"></script>
+	
+<link rel="stylesheet" href="//cdn.bootcss.com/highlight.js/8.6/styles/default.min.css">
+<script src="//cdn.bootcss.com/highlight.js/8.6/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+</body>
+</html>
